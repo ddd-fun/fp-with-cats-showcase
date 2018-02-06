@@ -1,4 +1,4 @@
-package org.showcase.stage1
+package org.showcase.step1
 
 import play.api.libs.json.JsValue
 

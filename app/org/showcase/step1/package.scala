@@ -3,7 +3,7 @@ package org.showcase
 import play.api.libs.json.JsValue
 
 
-package object stage1 {
+package object step1 {
 
   //type aliases
   type Error = String
