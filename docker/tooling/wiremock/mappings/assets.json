@@ -1,0 +1,39 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "/api/es/search",
+    "bodyPatterns": [
+      {
+        "equalToJson": {
+          "fields" : "_source",
+          "query" : {
+            "bool" : {
+              "must" : [ {
+                "terms" : {
+                  "identifier" : ["daa7d4a2-8d90-4587-84f3-28baa8d1ca9a", "65e81351-d352-4f2f-a9d3-7816ba7e6737", "6bde6c22-e86e-4298-aae4-5fca1c505554", "bea82281-a178-4f31-9bbb-ea4572158aa5", "d18c2e6a-253f-4c53-8105-d021bfdc7b00", "562de8dd-7400-4bb4-94e7-4051bc1847b1", "89092f0d-59cc-4c85-8689-07556011c050", "3e5703b0-823d-4987-ba68-03266d599a66", "b08f7b59-787d-4239-8e7b-9bc18d912c94"]
+                }
+              }, {
+                "term" : {
+                  "contenttype" : "fileasset"
+                }
+              }, {
+                "term" : {
+                  "languageid" : 3
+                }
+              } ],
+              "must_not" : {
+                "term" : {
+                  "deleted" : true
+                }
+              }
+            }
+          }
+        }
+      }
+    ]
+  },
+  "response": {
+    "status": 200,
+    "bodyFileName": "components.json"
+  }
+}

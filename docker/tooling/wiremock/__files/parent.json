@@ -1,0 +1,142 @@
+{
+  "contentlets": [
+    {
+      "queryForListing1": "pricefrom=0&cy=D&powertype=hp&powerfrom=110&custtype=P&atype=C&ustate=N%2CU&pic=true&sort=age&desc=1",
+      "modDate": "2018-01-04 09:57:37.206",
+      "title": "AutoScout24 PreisCheck: Kostenlos. Einfach. Turboschnell.",
+      "seoTitle": "AutoScout24 - Ihr Marktüberblick für den Fahrzeugkauf und -verkauf",
+      "socialIcons": false,
+      "inode": "614968f3-7a4c-4efc-b446-d26925c58501",
+      "metafollow": false,
+      "__DOTNAME__": "AutoScout24 PreisCheck: Kostenlos. Einfach. Turboschnell.",
+      "host": "55262dd2-c442-4989-b265-090e15a445cd",
+      "lastReview": "2018-01-04 09:57:37.187",
+      "stInode": "715d844f-0feb-45f7-bbc9-2e5d96220c53",
+      "owner": "dotcms.org.2996",
+      "identifier": "e161932c-2d6a-4f13-86bd-cd393fb9a2b9",
+      "metaindex": true,
+      "listingDisplay": "carousel",
+      "seoDescription": "AutoScout24 PreisCheck: Kostenlos. Einfach. Turboschnell. Profitieren Sie jetzt von der transparenten und zuverlässigen Preisempfehlung für Ihr Auto.",
+      "languageId": 3,
+      "listingTitle": "Aktuelle Angebote auf AutoScout24",
+      "url": "preischeck",
+      "hreflang": {
+      },
+      "folder": "f599dbcb-a2f3-48f6-9aa5-d80e97db6e07",
+      "sortOrder": 0,
+      "modUser": "dotcms.org.2942",
+      "header": true
+    }
+  ],
+  "esresponse": [
+    {
+      "took": 4,
+      "timed_out": false,
+      "_shards": {
+        "total": 1,
+        "successful": 1,
+        "failed": 0
+      },
+      "hits": {
+        "total": 1,
+        "max_score": 6.1252813,
+        "hits": [
+          {
+            "_index": "live_20171009080425",
+            "_type": "content",
+            "_id": "e161932c-2d6a-4f13-86bd-cd393fb9a2b9_3",
+            "_score": 6.1252813,
+            "_source": {
+              "deleted_dotraw": "false",
+              "confolder_dotraw": "f599dbcb-a2f3-48f6-9aa5-d80e97db6e07",
+              "languageid_dotraw": "3",
+              "pubdate_dotraw": "20180104085737",
+              "languageid": "3",
+              "c28contentpageasset-c19benefits-order": "d84ce331-1b40-488b-9330-380912cfff62_1 ",
+              "type": "content",
+              "c28contentpageasset-c05jumbotron": "21331e26-fc59-416b-be6e-0a34dffc9a3e ",
+              "c28contentpageasset-c08multiintrocontent_dotraw": "ca719ed3-45c6-40f1-9929-391259a792d2 80564e09-155c-4467-a7e3-90d1eb577190 ",
+              "shortinode": "614968f37a4c4efcb446d26925c58501",
+              "inode": "614968f3-7a4c-4efc-b446-d26925c58501",
+              "moddate": "20180104085737",
+              "path": "/promo/content.ed04063b-067c-4555-be8b-552e44dda40e",
+              "live_dotraw": "true",
+              "confolder": "f599dbcb-a2f3-48f6-9aa5-d80e97db6e07",
+              "permissions": "p9367271b-9366-4a73-93df-946cdcc5d8bf.1p p029556ec-3f0f-4be9-9e0a-928568ccf4ac.2p p029556ec-3f0f-4be9-9e0a-928568ccf4ac.1p p029556ec-3f0f-4be9-9e0a-928568ccf4ac.4p p04784e0d-ae2f-42be-98d4-8a044aa603bf.2p p04784e0d-ae2f-42be-98d4-8a044aa603bf.1p p04784e0d-ae2f-42be-98d4-8a044aa603bf.4p p654b0931-1027-41f7-ad4d-173115ed8ec1.1p ",
+              "shortid_dotraw": "e161932c2d6a4f1386bdcd393fb9a2b9",
+              "conhost": "55262dd2-c442-4989-b265-090e15a445cd",
+              "locked": "false",
+              "c28contentpageasset.title_dotraw": "autoscout24 preischeck: kostenlos. einfach. turboschnell.",
+              "shortid": "e161932c2d6a4f1386bdcd393fb9a2b9",
+              "identifier": "e161932c-2d6a-4f13-86bd-cd393fb9a2b9",
+              "ownercanwrite": "false",
+              "moduser_dotraw": "dotcms.org.2942",
+              "moddate_dotraw": "20180104085737",
+              "conhost_dotraw": "55262dd2-c442-4989-b265-090e15a445cd",
+              "c28contentpageasset-c19benefits": "d84ce331-1b40-488b-9330-380912cfff62 ",
+              "c28contentpageasset.seotitle_dotraw": "autoscout24 - ihr marktüberblick für den fahrzeugkauf und -verkauf",
+              "permissions_dotraw": "p9367271b-9366-4a73-93df-946cdcc5d8bf.1p p029556ec-3f0f-4be9-9e0a-928568ccf4ac.2p p029556ec-3f0f-4be9-9e0a-928568ccf4ac.1p p029556ec-3f0f-4be9-9e0a-928568ccf4ac.4p p04784e0d-ae2f-42be-98d4-8a044aa603bf.2p p04784e0d-ae2f-42be-98d4-8a044aa603bf.1p p04784e0d-ae2f-42be-98d4-8a044aa603bf.4p p654b0931-1027-41f7-ad4d-173115ed8ec1.1p ",
+              "working_dotraw": "true",
+              "ownercanread": "false",
+              "versionts_dotraw": "20180104085737",
+              "title_dotraw": "autoscout24 preischeck: kostenlos. einfach. turboschnell.",
+              "contenttype_dotraw": "c28contentpageasset",
+              "structuretype_dotraw": "1",
+              "ownercanpublish": "false",
+              "parentpath": "/promo/",
+              "structurename": "c28contentpageasset",
+              "c28contentpageasset-c19benefits_dotraw": "d84ce331-1b40-488b-9330-380912cfff62 ",
+              "structurename_dotraw": "c28contentpageasset",
+              "c28contentpageasset.queryforlisting1": "pricefrom=0&cy=d&powertype=hp&powerfrom=110&custtype=p&atype=c&ustate=n%2cu&pic=true&sort=age&desc=1",
+              "identifier_dotraw": "e161932c-2d6a-4f13-86bd-cd393fb9a2b9",
+              "c28contentpageasset-c08multiintrocontent-order_dotraw": "ca719ed3-45c6-40f1-9929-391259a792d2_1 80564e09-155c-4467-a7e3-90d1eb577190_2 ",
+              "expdate_dotraw": "29990101000000",
+              "expdate": "29990101000000",
+              "shortinode_dotraw": "614968f37a4c4efcb446d26925c58501",
+              "c28contentpageasset.title": "autoscout24 preischeck: kostenlos. einfach. turboschnell.",
+              "title": "autoscout24 preischeck: kostenlos. einfach. turboschnell.",
+              "c28contentpageasset-c05jumbotron-order_dotraw": "21331e26-fc59-416b-be6e-0a34dffc9a3e_1 ",
+              "c28contentpageasset-c05jumbotron_dotraw": "21331e26-fc59-416b-be6e-0a34dffc9a3e ",
+              "working": "true",
+              "locked_dotraw": "false",
+              "c28contentpageasset.queryforlisting1_dotraw": "pricefrom=0&cy=d&powertype=hp&powerfrom=110&custtype=p&atype=c&ustate=n%2cu&pic=true&sort=age&desc=1",
+              "owner_dotraw": "dotcms.org.2996",
+              "c28contentpageasset-c08multiintrocontent": "ca719ed3-45c6-40f1-9929-391259a792d2 80564e09-155c-4467-a7e3-90d1eb577190 ",
+              "path_dotraw": "/promo/content.ed04063b-067c-4555-be8b-552e44dda40e",
+              "live": "true",
+              "ownercanpublish_dotraw": "false",
+              "pubdate": "20180104085737",
+              "ownercanwrite_dotraw": "false",
+              "owner": "dotcms.org.2996",
+              "ownercanread_dotraw": "false",
+              "type_dotraw": "content",
+              "inode_dotraw": "614968f3-7a4c-4efc-b446-d26925c58501",
+              "c28contentpageasset.seotitle": "autoscout24 - ihr marktüberblick für den fahrzeugkauf und -verkauf",
+              "structuretype": "1",
+              "moduser": "dotcms.org.2942",
+              "c28contentpageasset-c08multiintrocontent-order": "ca719ed3-45c6-40f1-9929-391259a792d2_1 80564e09-155c-4467-a7e3-90d1eb577190_2 ",
+              "contenttype": "c28contentpageasset",
+              "c28contentpageasset-c19benefits-order_dotraw": "d84ce331-1b40-488b-9330-380912cfff62_1 ",
+              "parentpath_dotraw": "/promo/",
+              "basetype_dotraw": "1",
+              "c28contentpageasset.url_dotraw": "preischeck",
+              "deleted": "false",
+              "versionts": "20180104085737",
+              "basetype": "1",
+              "c28contentpageasset.url": "preischeck",
+              "c28contentpageasset-c05jumbotron-order": "21331e26-fc59-416b-be6e-0a34dffc9a3e_1 "
+            },
+            "fields": {
+              "inode": [
+                "614968f3-7a4c-4efc-b446-d26925c58501"
+              ],
+              "identifier": [
+                "e161932c-2d6a-4f13-86bd-cd393fb9a2b9"
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

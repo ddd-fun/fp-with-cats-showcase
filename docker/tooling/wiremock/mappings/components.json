@@ -1,0 +1,36 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "/api/es/search",
+    "bodyPatterns": [
+      {
+        "equalToJson": {
+          "fields" : "_source",
+          "query" : {
+            "bool" : {
+              "must" : [ {
+                "query_string" : {
+                  "fields" : [ "c28contentpageasset-*" ],
+                  "query" : "e161932c-2d6a-4f13-86bd-cd393fb9a2b9"
+                }
+              }, {
+                "term" : {
+                  "languageid" : 3
+                }
+              } ],
+              "must_not" : {
+                "term" : {
+                  "deleted" : true
+                }
+              }
+            }
+          }
+        }
+      }
+    ]
+  },
+  "response": {
+    "status": 200,
+    "bodyFileName": "components.json"
+  }
+}
