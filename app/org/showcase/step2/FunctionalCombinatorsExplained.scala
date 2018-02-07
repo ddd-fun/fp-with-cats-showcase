@@ -1,7 +1,7 @@
 package org.showcase.step2
 
 import scala.util.Try
-
+import scala.language.higherKinds
 
 trait FunctionalCombinatorsExplained {
 
@@ -23,8 +23,8 @@ trait FunctionalCombinatorsExplained {
 
   // how about this?
   func3("0")
-  // in order to understand what might happen here, we have to drill down
-  // and figure out all details about what our func3 is composed from? and How?
+  //  In order to understand what might happen here, we have to drill down and then
+  // figure out all details about what our func3 is composed from? and How?
   // this dramatically reduces local reasoning and make no sense of composition at all!
 
 
