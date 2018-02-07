@@ -80,9 +80,10 @@ trait FunctionalCombinatorsExplained {
 
   //this is very common pattern in functional programming and it's already implemented
   //check out implementations here
+  import cats.instances.either
 
   // and add it if you want to have flatMap method attached to your Either
-
+  import cats.syntax.either._
 
   // Is it valuable knowledge? Will it help me to maintain value of my programming skills?
   // okay..
