@@ -17,7 +17,9 @@ libraryDependencies ++= Seq(
   "org.scalatestplus.play" %% "scalatestplus-play" % "3.1.2" % Test,
   "org.scalatest" %% "scalatest" % "2.2.6" % Test,
   "org.scalacheck" %% "scalacheck" % "1.13.4" % Test,
-  "com.github.tomakehurst" % "wiremock" % "1.33"
+  "com.github.tomakehurst" % "wiremock" % "1.33",
+  "co.fs2" %% "fs2-core" % "0.10.0-RC1",
+  "co.fs2" %% "fs2-io" % "0.10.0-RC1"
 )
 
 routesImport ++= Seq("extensions.Binders._")
