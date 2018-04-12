@@ -1,0 +1,31 @@
+# Old and revoked keys
+71dde590-fd46-4e0b-91d5-a34dd6011758
+# ignore test
+ClientSuite.scala
+# ignore readme.md
+README.md
+# SBT build properties
+template.uuid=[a-z0-9-]*
+# CSV files
+csv_import/files/*
+csv_import/logs/*
+# dotCMS host ids
+8136f75d-ff18-4ac3-b0ef-248eb3098fc9
+a5ce9e8e-d411-4a14-8f0d-0a4338f86500
+Site.scala
+docker/*
+
+# dotCMS identifiers ids
+614968f3-7a4c-4efc-b446-d26925c58501
+718968f3-7a4c-4efc-b446-d26925c58501
+
+#toguru client version
+ede9d3b5349653f51374026356a616f44a47f762
+
+#api keys for cms
+JkSHKHbqme2KWTgu5R7+VpGRV+Na7B9klbjWFQhj364=
+
+# Ignore NodeJS NPM related files
+package-lock.json
+npm-shrinkwrap.json
+package.json

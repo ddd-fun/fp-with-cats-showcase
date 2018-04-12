@@ -8,7 +8,6 @@
 .sass-cache
 .settings
 *.iml
-*.sc
 *.log
 deploy/tatsu-service.version
 dist
