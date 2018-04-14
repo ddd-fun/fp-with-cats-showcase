@@ -137,7 +137,16 @@ trait Fs2 {
 
     enQueue mergeHaltR deQueue
 
-  }.compile.drain.unsafeRunSync()
+  }.compile.drain//.unsafeRunSync()
+
+
+  //example of sink which writes concurrently
+  def concurrentIOSink[Item](writeCapacity:Int, write:Item => IO[Unit]) : Sink[IO, Item] =
+    _.segmentN(writeCapacity).flatMap[Stream[IO, Unit]]{seg =>
+        val writersIO : List[IO[Unit]]  = seg.map(write).force.toList
+        val writersList : List[Stream[IO, Unit]] =  writersIO.map(Stream.eval)
+        Stream.fromIterator[IO, Stream[IO, Unit]](writersList.iterator)
+    }.join(writeCapacity)
 
 
 
