@@ -6,6 +6,7 @@ import java.util.concurrent.Executors
 import scala.concurrent.ExecutionContext
 import scala.concurrent.duration._
 
+import scala.language.higherKinds
 
 trait Fs2 {
 
@@ -107,7 +108,22 @@ trait Fs2 {
   }.compile.drain//.unsafeRunSync()
 
 
+  // interrupt example
+  // stream read infinitely from stdin and in case of parsing exception it reports error then stops
+  Stream.eval(signal).flatMap{sig =>
 
+    val reader = Stream.eval(IO{scala.io.StdIn.readLine().toInt}).attempt.evalMap{ // attempt works only if exception was thrown within IO
+      case Left(th) => IO{println(s"ERRROR: $th")}.flatMap(_ => sig.set(-1))
+      case Right(i) => IO{println(s"OK: $i")}.flatMap(_ => sig.set(i))
+    }.repeat
+
+    // this stream produce true if sig == -1 otherwise infinite false
+    val listener = sig.discrete.map(_== -1)
+
+    //interrupt when listener turns to true
+    reader.interruptWhen(sig.map(_ == -1))  // == reader.interruptWhen(listener)
+
+  }.compile.drain//.unsafeRunSync()
 
 
   stp.shutdown()
