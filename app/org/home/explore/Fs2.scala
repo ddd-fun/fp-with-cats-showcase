@@ -126,6 +126,21 @@ trait Fs2 {
   }.compile.drain//.unsafeRunSync()
 
 
+  // read stdin -> enqueue -> dequeue -> print, stops when read 'exit'
+  val queue = async.boundedQueue[IO, String](10)
+
+  Stream.eval(queue).flatMap{ q =>
+
+    val enQueue =  Stream.eval(IO{scala.io.StdIn.readLine()}).to(q.enqueue).repeat.drain
+
+    val deQueue = Stream.eval(q.dequeue1.flatMap(s => IO{println(s"from queue: $s"); s})).repeat.takeWhile(_ != "exit").drain
+
+    enQueue mergeHaltR deQueue
+
+  }.compile.drain.unsafeRunSync()
+
+
+
   stp.shutdown()
 
 
