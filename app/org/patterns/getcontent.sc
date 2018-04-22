@@ -1,6 +1,7 @@
 //@ import $ivy.`org.typelevel:cats-effect_2.12:0.10`
 //@ import $ivy.`io.circe:circe-optics_2.12:0.9.3`
 
+import cats.MonadError
 import cats.data.EitherT
 import cats.syntax.all._
 import cats.effect._
@@ -10,9 +11,10 @@ import io.circe.optics.JsonPath._
 
 import org.http4s.client.blaze.Http1Client
 
-import scala.concurrent.{Future, Await}
+import scala.concurrent.{Await, Future}
 import scala.concurrent.duration._
 import scala.concurrent.ExecutionContext.Implicits.global
+import scala.language.higherKinds
 
 type Error = String
 type Html = String
@@ -102,4 +104,16 @@ def getHtml22(path: String, lng:String) : Future[ErrorOr[Html]] = {
   tStack.value
 }
 
-Await.result(getHtml1("/product/stream-liner", "de-DE"), 5.seconds)
+import cats.instances.future._
+
+def getHtml33(path: String, lng:String)(implicit ME:MonadError[Future, Throwable]) : Future[ErrorOr[Html]] = {
+  val meStack = for{
+     uri  <- ME.fromEither(ContentLocator.parse(path, lng).leftMap(msg => new RuntimeException(msg)))
+     json <- ME.rethrow(getContent(uri).map(_.leftMap(msg => new RuntimeException(msg))))
+     html <- ME.fromEither(renderContent(json).leftMap(msg => new RuntimeException(msg)))
+  } yield html
+  meStack.attempt.map(_.leftMap(th => th.getMessage()))
+}
+
+
+Await.result(getHtml33("/product/stream-liner", "de-DE"), 5.seconds)
