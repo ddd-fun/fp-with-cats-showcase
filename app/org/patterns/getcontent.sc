@@ -1,5 +1,8 @@
-//@ import $ivy.`org.typelevel:cats-effect_2.12:0.10`
+//@ import $ivy.`org.typelevel:cats-core_2.12:1.1.0`
+//@ import $ivy.`org.typelevel:cats-effect_2.12:1.0.0-RC`
 //@ import $ivy.`io.circe:circe-optics_2.12:0.9.3`
+//@ import $ivy.`org.http4s:http4s-blaze-client_2.12:0.18.9`
+//@ import $ivy.`org.http4s:http4s-circe_2.12:0.18.9`
 
 import cats.MonadError
 import cats.data.EitherT
