@@ -154,6 +154,30 @@ object UnitTest {
   }
 }
 
-UnitTest.run
+
+case class Mocked[A](reader:Reader[Mocked.Data, A])
+object Mocked{
+  type Data = Map[ContentUri, Json]
+
+  def apply[A](map: Data => A) : Mocked[A]  = Mocked(Reader(map))
+
+  implicit val getContentMockedInstance = new GetContent[Mocked] {
+    override def doGet(contentLocator: ContentUri): Mocked[ErrorOr[Json]] = {
+      Mocked[ErrorOr[Json]]{ map:Data =>
+        Either.fromOption(map.get(contentLocator), s"no found by $contentLocator") }
+    }
+  }
+  // add here more instances to your Mockery
+
+  type ReaderData[A] = Reader[Data, A]
+  implicit def monadInstance(implicit RM:Monad[ReaderData]) : Monad[Mocked] = new Monad[Mocked] {
+    override def pure[A](x: A): Mocked[A] = Mocked(RM.pure(x))
+    override def flatMap[A, B](fa: Mocked[A])(f: (A) => Mocked[B]): Mocked[B] = Mocked(RM.flatMap(fa.reader)((a:A) => f(a).reader))
+    override def tailRecM[A, B](a: A)(f: (A) => Mocked[Either[A, B]]): Mocked[B] = Mocked(RM.tailRecM(a)((a:A)=> f(a).reader))
+  }
+
+}
+
+getHtml4[Mocked]("/product/stream-liner", "de-DE")
 
 Await.result(getHtml4[Future]("/product/stream-liner", "de-DE"), 5.seconds)
