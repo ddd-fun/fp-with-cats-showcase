@@ -155,6 +155,7 @@ object UnitTest {
 }
 
 
+// roll out your own Mock framework in few lines of code
 case class Mockery[Data, A](reader:Reader[Data, A]){
   def apply(data:Data) : A = reader.apply(data)
 }
@@ -164,7 +165,6 @@ object Mockery{
 
   type ContentData = Map[ContentUri, Json]
   type ContentMock[A] = Mockery[ContentData, A]
-  val emptyContentData = Map.empty[ContentUri, Json]
   implicit val getContentMockedInstance = new GetContent[ContentMock] {
     override def doGet(contentLocator: ContentUri): ContentMock[ErrorOr[Json]] = {
       Mockery[ContentData, ErrorOr[Json]]{ map:ContentData =>
@@ -183,6 +183,6 @@ object Mockery{
 
 }
 
-getHtml4[Mockery.ContentMock]("/product/stream-liner", "de-DE").apply(Mockery.emptyContentData)
+getHtml4[Mockery.ContentMock]("/product/stream-liner", "de-DE").apply(Map.empty[ContentUri, Json])
 
 Await.result(getHtml4[Future]("/product/stream-liner", "de-DE"), 5.seconds)
