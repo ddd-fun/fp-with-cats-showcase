@@ -155,29 +155,34 @@ object UnitTest {
 }
 
 
-case class Mocked[A](reader:Reader[Mocked.Data, A])
-object Mocked{
-  type Data = Map[ContentUri, Json]
+case class Mockery[Data, A](reader:Reader[Data, A]){
+  def apply(data:Data) : A = reader.apply(data)
+}
+object Mockery{
 
-  def apply[A](map: Data => A) : Mocked[A]  = Mocked(Reader(map))
+  def apply[D, A](map: D => A) : Mockery[D,A]  = Mockery(Reader(map))
 
-  implicit val getContentMockedInstance = new GetContent[Mocked] {
-    override def doGet(contentLocator: ContentUri): Mocked[ErrorOr[Json]] = {
-      Mocked[ErrorOr[Json]]{ map:Data =>
+  type ContentData = Map[ContentUri, Json]
+  type ContentMock[A] = Mockery[ContentData, A]
+  val emptyContentData = Map.empty[ContentUri, Json]
+  implicit val getContentMockedInstance = new GetContent[ContentMock] {
+    override def doGet(contentLocator: ContentUri): ContentMock[ErrorOr[Json]] = {
+      Mockery[ContentData, ErrorOr[Json]]{ map:ContentData =>
         Either.fromOption(map.get(contentLocator), s"no found by $contentLocator") }
     }
   }
   // add here more instances to your Mockery
 
-  type ReaderData[A] = Reader[Data, A]
-  implicit def monadInstance(implicit RM:Monad[ReaderData]) : Monad[Mocked] = new Monad[Mocked] {
-    override def pure[A](x: A): Mocked[A] = Mocked(RM.pure(x))
-    override def flatMap[A, B](fa: Mocked[A])(f: (A) => Mocked[B]): Mocked[B] = Mocked(RM.flatMap(fa.reader)((a:A) => f(a).reader))
-    override def tailRecM[A, B](a: A)(f: (A) => Mocked[Either[A, B]]): Mocked[B] = Mocked(RM.tailRecM(a)((a:A)=> f(a).reader))
-  }
+  // use kind projector plugin for PROD code
+  implicit def monadInstance[D](implicit RM:Monad[({type T[A] = Reader[D, A] })#T]) : Monad[({type M[A] = Mockery[D, A] })#M] = {
+    new Monad[({type M[A] = Mockery[D, A] })#M] {
+    override def pure[A](x: A): Mockery[D, A] = Mockery(RM.pure(x))
+    override def flatMap[A, B](fa: Mockery[D, A])(f: (A) => Mockery[D, B]): Mockery[D, B] = Mockery(RM.flatMap(fa.reader)((a:A) => f(a).reader))
+    override def tailRecM[A, B](a: A)(f: (A) => Mockery[D, Either[A, B]]): Mockery[D, B] = Mockery(RM.tailRecM(a)((a:A)=> f(a).reader))
+  }}
 
 }
 
-getHtml4[Mocked]("/product/stream-liner", "de-DE")
+getHtml4[Mockery.ContentMock]("/product/stream-liner", "de-DE").apply(Mockery.emptyContentData)
 
 Await.result(getHtml4[Future]("/product/stream-liner", "de-DE"), 5.seconds)
