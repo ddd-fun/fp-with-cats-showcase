@@ -126,6 +126,24 @@ trait Fs2 {
   }.compile.drain//.unsafeRunSync()
 
 
+
+  // "counter observer" observes stream sync, calculate rate msg/sec and write to out
+  Stream("msg").covary[IO]
+  .through(randomDelays(5.millis)).repeat.take(5000)
+  .observe{ in =>
+     Stream.eval(fs2.async.refOf[IO, Int](0)).flatMap{  ref =>
+       //potentially awakeDelay might be more precise; and dump operation sync
+       val rater = scheduler.awakeEvery[IO](1.second).flatMap( _ =>
+         Stream.eval(ref.modify(_ => 0).flatMap(change => IO{println(s"${change.previous} msg/sec")} ) )
+       ).drain
+       // since observe is sync, modify might add performance penalty
+       val counter = in.evalMap(_ => ref.modify(_+1)).drain
+
+       counter.mergeHaltL(rater)
+     }
+  }.compile.drain.unsafeRunSync()
+
+
   // read stdin -> enqueue -> dequeue -> print, stops when read 'exit'
   val queue = async.boundedQueue[IO, String](10)
 
