@@ -3,16 +3,21 @@ package org.home.explore
 import java.util.concurrent.Executors
 
 import cats.effect.IO
+import fs2.async.mutable.{Semaphore, Signal}
 import fs2.internal.ThreadFactories
 import fs2.{Pipe, Sink, Stream, async}
 
 import scala.concurrent.ExecutionContext
-
+import scala.concurrent.duration._
 
 trait Fs2Partitioning {
 
   implicit val ec2:ExecutionContext = ExecutionContext
     .fromExecutorService(Executors.newCachedThreadPool(ThreadFactories.named("ec2", daemon = true)))
+
+  val stp = Executors.newScheduledThreadPool(10, ThreadFactories.named("stp", daemon = true))
+
+  val scheduler = fs2.Scheduler.fromScheduledExecutorService(stp)
 
 
   trait Data
@@ -47,22 +52,23 @@ trait Fs2Partitioning {
   // Example of partitioning and parallel processing with async boundaries
 
   val privateDataQueue = async.boundedQueue[IO, Private](10)
-  val publicDataQueue = async.boundedQueue[IO, Public](10)
+  val publicDataQueue = async.boundedQueue[IO, Public](200)
 
-  type DispatchingQueues = Tuple2[async.mutable.Queue[IO, Private], async.mutable.Queue[IO, Public]]
+  type DispatchingQueues = Tuple3[async.mutable.Queue[IO, Private], async.mutable.Queue[IO, Public], Semaphore[IO]]
 
   // zip two queues
   val pairOfQueue:IO[DispatchingQueues] = for{
     prv <- privateDataQueue
     pub <- publicDataQueue
-  } yield (prv, pub)
+    sig <- async.semaphore[IO](0)
+  } yield (prv, pub, sig)
 
 
 
   val asyncDataPartitioner: Sink[IO, Data] =  (dataStream: Stream[IO, Data]) => {
 
     // 1. eval effects of creating DispatchingQueues
-    Stream.eval[IO, DispatchingQueues](pairOfQueue).flatMap{ case (privateQueue, publicQueue) =>
+    Stream.eval[IO, DispatchingQueues](pairOfQueue).flatMap{ case (privateQueue, publicQueue, sig) =>
 
       val dataProducer = dataStream.flatMap{
         case pr:Private =>  Stream.eval(privateQueue.enqueue1(pr))
@@ -70,15 +76,22 @@ trait Fs2Partitioning {
       }
 
       // 2. dequeue from each queue and dump data element to Sink
-      val privateDataConsumer = privateQueue.dequeue.to(fs2.Sink[IO, Private](d => IO{println(s"thread:${Thread.currentThread.getName}:> dump to private sink: $d")}))
+      val privateDataConsumer = privateQueue.timedDequeue1(2.seconds, scheduler).flatMap{
+        case Some(data) => IO{ println(s"thread:${Thread.currentThread.getName}:> dump to private sink: $data")}
+        case None => IO{println(s"thread:${Thread.currentThread.getName}:> dump to private sink: timed out after 2 seconds")}
+          .flatMap(_ => sig.increment) // increment if timed out
+      }
 
-      val publicDataConsumer = publicQueue.dequeue.to(fs2.Sink[IO, Public](d => IO{println(s"thread:${Thread.currentThread.getName}:> dump to public sink: $d")}))
-
+      val publicDataConsumer = publicQueue.timedDequeue1(2.seconds, scheduler).flatMap{
+        case Some(data) => IO{println(s"thread:${Thread.currentThread.getName}:> dump to public sink: $data")}
+        case None => IO{println(s"thread:${Thread.currentThread.getName}:> dump to public sink: timed out after 2 seconds")}
+          .flatMap(_ => sig.increment)
+      }
       // 3. trigger "consumer's programs" concurrently.
-      val dataConsumer = privateDataConsumer.concurrently(publicDataConsumer)
+      val dataConsumer = Stream.eval(privateDataConsumer).repeat.merge(Stream.eval(publicDataConsumer).repeat)
 
       // 4. trigger "produces and consumer's program " concurrently
-      dataProducer.concurrently( dataConsumer )
+      dataProducer.mergeHaltR( dataConsumer.interruptWhen(Stream.eval(sig.available.map{_ > 5} ).repeat)  )
     }
 
   }
@@ -88,7 +101,7 @@ trait Fs2Partitioning {
   fs2.Stream.emits(Seq(Private("private one"), Public("public one")))
     .repeat.take(200).covary[IO]
     .to(asyncDataPartitioner)
-    .compile.drain//.unsafeRunSync()
+    .compile.drain.unsafeRunSync()
 
 
 }
