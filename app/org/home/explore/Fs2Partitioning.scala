@@ -1,10 +1,19 @@
 package org.home.explore
 
+import java.util.concurrent.Executors
+
 import cats.effect.IO
+import fs2.internal.ThreadFactories
 import fs2.{Pipe, Sink, Stream, async}
+
+import scala.concurrent.ExecutionContext
 
 
 trait Fs2Partitioning {
+
+  implicit val ec2:ExecutionContext = ExecutionContext
+    .fromExecutorService(Executors.newCachedThreadPool(ThreadFactories.named("ec2", daemon = true)))
+
 
   trait Data
   case class Private(content:String) extends Data
