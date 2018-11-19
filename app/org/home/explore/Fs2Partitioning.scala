@@ -75,17 +75,17 @@ trait Fs2Partitioning {
       val publicDataConsumer = publicQueue.dequeue.to(fs2.Sink[IO, Public](d => IO{println(s"thread:${Thread.currentThread.getName}:> dump to public sink: $d")}))
 
       // 3. trigger "consumer's programs" concurrently.
-      val dataConsumer = privateDataConsumer.drain.merge(publicDataConsumer.drain)
+      val dataConsumer = privateDataConsumer.concurrently(publicDataConsumer)
 
       // 4. trigger "produces and consumer's program " concurrently
-      dataProducer.drain.merge( dataConsumer )
+      dataProducer.concurrently( dataConsumer )
     }
 
   }
 
 
 
-  fs2.Stream.emits(Seq(Private("private one"), Public("public one"), Private("private two")))
+  fs2.Stream.emits(Seq(Private("private one"), Public("public one")))
     .repeat.take(200).covary[IO]
     .to(asyncDataPartitioner)
     .compile.drain//.unsafeRunSync()
